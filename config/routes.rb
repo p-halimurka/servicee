@@ -6,8 +6,5 @@ Rails.application.routes.draw do
   root 'home#index'
 
   resources :users, only: [:show] do
-    collection do
-      post :switch_sign_up_type
-    end
   end
 end
