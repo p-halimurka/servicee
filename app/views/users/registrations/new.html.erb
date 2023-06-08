@@ -1,0 +1,36 @@
+<h2>Sign up as</h2>
+
+<div class="container-sm form-signin w-100 m-auto">
+  <%= bootstrap_form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+    <%= turbo_frame_tag 'user_type', data: { controller: 'registrations' } do %>
+      <%= render "users/shared/error_messages", resource: resource %>
+      <div class="d-flex justify-content-center">
+        <%= f.radio_button :user_type, 'regular', checked: @user_type == 'regular', label: 'User', inline: true, 
+                           class: 'btn-check', label_class: "btn btn-outline-secondary btn-sm sign-up-btn btn-square-right", 
+                           wrapper_class: 'form-check sign-up-form', 
+                           data: { action: 'change->registrations#switchUserType', url: new_user_registration_path(user: { user_type: 'regular' } ) } %>
+        <%= f.radio_button :user_type, 'service_provider', checked: @user_type == 'service_provider', label: 'Service provider', inline: true, 
+                           class: 'btn-check', label_class: "btn btn-outline-secondary btn-sm sign-up-btn btn-square-left", 
+                           wrapper_class: 'form-check sign-up-form', 
+                           data: { action: 'change->registrations#switchUserType', url: new_user_registration_path(user: { user_type: 'service_provider' }) } %>
+      </div>
+      <%= f.email_field :email%>
+      <%= f.text_field :first_name %>
+      <%= f.text_field :last_name %>
+      <% if @user_type == 'regular' %>
+      <% elsif @user_type == 'service_provider' %>
+        <%= f.fields_for :service_provider do |provider_f| %>
+          <%= provider_f.select :service_provider_category_id, ServiceProviderCategory.all.map {|category| [category.name, category.id] } %>
+          <%= provider_f.text_field :phone_number %>
+          <%= provider_f.text_area :bio %>
+        <% end %>
+      <% end %>
+      <%= f.password_field :password %>
+      <%= f.password_field :password_confirmation %>
+      <%= f.submit "Sign up" %>
+    <% end %>
+  <% end %>
+</div>
+
+
+<%= render "users/shared/links" %>

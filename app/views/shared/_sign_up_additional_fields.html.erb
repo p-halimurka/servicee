@@ -1,0 +1,6 @@
+<% if user_type == 'regular' %>
+
+<% elsif user_type == 'service_provider' %>
+  <%= f.text_field :bio %>
+  <%= f.hidden_field :user_type, value: user_type %>
+<% end %>

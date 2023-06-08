@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Servicee</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
+  </head>
+
+
+  <body class="d-flex flex-column h-100 custom-body mb-5">
+    <header>
+      <% if current_user %>
+        <%= render partial: 'shared/users_menu' %>
+      <% else %>
+        <%= render partial: 'shared/home_menu' %>
+      <% end %>
+    </header>
+    <% flash.each do |type, msg| %>
+      <div class="my-alert">
+        <div class="mt-5 alert alert-dismissible fade show <%= bootstrap_class_for_flash(type) %> text-center">
+          <%= msg %>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      </div>
+    <% end %>
+    <main class="flex-shrink-0 custom-main">
+      <div class="container">
+        <%= yield %>
+      </div>
+    </main>
+    <% if false %>
+      <footer class="footer mt-auto py-3 bg-light">
+        <div class="container">
+          <span class="text-muted">Place sticky footer content here.</span>
+        </div>
+      </footer>
+    <% end %>
+  </body>
+</html>

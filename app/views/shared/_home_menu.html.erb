@@ -1,0 +1,19 @@
+<!-- Fixed navbar -->
+<nav class="navbar navbar-expand-md fixed-top custom-navbar border-bottom">
+  <div class="container-fluid">
+    <%= link_to 'Servicee', root_path, class: "navbar-brand fw-bold" %>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse d-flex justify-content-end" id="navbarCollapse">
+      <div class="navbar-nav">
+        <div>
+          <%= link_to 'Log in', new_user_session_path, class: "nav-link me-3 underline-link" %>
+        </div>
+        <div>
+          <%= link_to 'Sign up', new_user_registration_path, class: "nav-link me-3 underline-link" %>
+        </div>    
+      <div>
+    </div>
+  </div>
+</nav>
