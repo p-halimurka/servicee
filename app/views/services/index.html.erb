@@ -1,0 +1,20 @@
+<h1 class='text-center'>All services</h1>
+<div class='d-flex justify-content-center'>
+  <ol class="list-group list-group-numbered mt-5 service-container">
+    <% @services.each do |service| %>
+    <li class="list-group-item d-flex justify-content-between align-items-start">
+      <div class="ms-2 me-auto">
+        <div class="fw-bold">
+          <%= service.title %>
+        </div>
+        <% service.service_categories.each do |service_category| %>
+          <span class="badge bg-primary-subtle border border-primary-subtle text-primary-emphasis rounded-pill">
+            <%= service_category.name %>
+          </span>
+        <% end %>
+      </div>
+    </li>
+    <% end %>
+  </ol>
+</div>
+

@@ -1,0 +1,17 @@
+<h1 class='text-center'>New service</h1>
+<div class='d-flex justify-content-center'>
+ 
+  <div class='service-container' data-controller='services'>
+    <%= bootstrap_form_with url: service_provider_services_path(current_user.service_provider), method: :post do |f| %>
+      <%= f.collection_check_boxes :service_categories, ServiceCategory.all, :id, :name %>
+      <%= f.text_field :title %>
+      <%= f.text_area :description %>
+      <%= f.collection_radio_buttons :pricing_type, Service.pricing_types.to_a.map {|arr| [arr.first.split('_').join(' '), arr.last]}, 
+                                     :last, :first, data: { action: 'change->services#switchPriciingType' } %>
+      <%= f.number_field :price, min: 0 %>
+      <%= f.text_field :duration_in_minutes, label: 'Duration in hours' %>
+      <%= f.check_box :requires_confirmation, label: "Service's bookings must be confirmed" %>
+      <%= f.submit 'Create', class: 'btn btn-primary' %>
+    <% end %>
+  </div>
+</div>

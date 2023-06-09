@@ -9,3 +9,6 @@ application.register("hello", HelloController)
 
 import RegistrationsController from "./registrations_controller"
 application.register("registrations", RegistrationsController)
+
+import ServicesController from "./services_controller"
+application.register("services", ServicesController)
