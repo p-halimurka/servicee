@@ -7,4 +7,8 @@ Rails.application.routes.draw do
 
   resources :users, only: [:show] do
   end
+
+  resources :service_providers, only: [:new, :create, :edit, :update] do
+    resources :services
+  end
 end

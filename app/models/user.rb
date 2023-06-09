@@ -6,6 +6,11 @@ class User < ApplicationRecord
 
   has_one :service_provider
   has_one :service_consumer
+  has_one :employee
 
   attr_accessor :user_type
+
+  def service_provider?
+    service_provider.present?
+  end
 end

@@ -7,12 +7,20 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarCollapse">
       <ul class="navbar-nav me-auto mb-2 mb-md-0">
-        <li class="nav-item ms-2">
-          <%= link_to 'Make an appointment', root_path, class: 'nav-link underline-link' %>
-        </li>
-        <li class="nav-item ms-2">
-          <%= link_to 'My appointments', root_path, class: 'nav-link underline-link' %>
-        </li>
+        <% if current_user.service_provider? %>
+          <li class="nav-item ms-2">
+            <%= link_to 'Add service', new_service_provider_service_path(current_user.service_provider), class: 'nav-link underline-link' %>
+          </li>
+
+          <li class="nav-item ms-2">
+            <%= link_to 'Services', service_provider_services_path(current_user.service_provider), class: 'nav-link underline-link' %>
+          </li>
+        <% end %>
+        <% if false %>
+          <li class="nav-item ms-2">
+            <%= link_to 'My appointments', root_path, class: 'nav-link underline-link' %>
+          </li>
+        <% end %>
       </ul>
 
       <div class="navbar-nav profile-dropdown" data-bs-theme="dark">
