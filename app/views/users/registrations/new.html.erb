@@ -14,7 +14,10 @@
                            wrapper_class: 'form-check sign-up-form', 
                            data: { action: 'change->registrations#switchUserType', url: new_user_registration_path(user: { user_type: 'service_provider' }) } %>
       </div>
-      <%= f.email_field :email%>
+      <div class="form-floating mb-3">
+        <input type="email" class="form-control" name="user[email]" id="user_email" placeholder="name@example.com" value>
+        <label for="user_email">Email</label>
+      </div>
       <%= f.text_field :first_name %>
       <%= f.text_field :last_name %>
       <% if @user_type == 'regular' %>

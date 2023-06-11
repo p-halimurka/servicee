@@ -12,14 +12,20 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   # POST /resource
   def create
-    @user_type = params.dig(:user, :user_type)
-    service_provider = ServiceProvider.new(service_provider_params)
-    # add the same for consumer (see params)
+
     super do |resource|
       @user_id = resource.id if resource.persisted?
     end
-    service_provider.user_id = @user_id
-    service_provider.save
+    if params[:service_provider_category_id]
+      @user_type = params.dig(:user, :user_type)
+      service_provider = ServiceProvider.new(service_provider_params)
+      # add the same for consumer (see params)
+      service_provider.user_id = @user_id
+      service_provider.save
+    else
+      service_consumer = ServiceConsumer.new(user_id: @user_id)
+      service_consumer.save
+    end
   end
 
   # GET /resource/edit

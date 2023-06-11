@@ -1,0 +1,7 @@
+<ul class="list-group">
+  <% services.each do |service| %>
+    <li class="list-group-item">
+      <%= link_to "#{service.title}", service_path(service), data: { turbo: false } %>
+    </li>
+  <% end %>
+</ul>

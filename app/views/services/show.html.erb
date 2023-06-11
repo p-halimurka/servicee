@@ -1,0 +1,4 @@
+<%= @service.title %>
+<% @service.service_categories.each do |category| %>
+    <span class="badge bg-primary-subtle border border-primary-subtle text-primary-emphasis rounded-pill"><%= category.name %></span>
+<% end %>

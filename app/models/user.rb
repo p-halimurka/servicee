@@ -13,4 +13,8 @@ class User < ApplicationRecord
   def service_provider?
     service_provider.present?
   end
+
+  def service_consumer?
+    service_consumer.present?
+  end
 end

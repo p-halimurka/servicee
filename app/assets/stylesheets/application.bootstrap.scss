@@ -4,6 +4,8 @@
 
 .my-alert {
   margin-top: 9px;
+  padding-left: 0;
+  padding-right: 0;
 }
 
 .custom-navbar {
@@ -50,4 +52,12 @@
 
 .service-container {
   width: 500px;
+}
+
+.search-sidebar {
+  margin-top: 4%;
+}
+
+.float-right {
+  float: right;
 }

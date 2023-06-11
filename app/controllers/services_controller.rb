@@ -8,6 +8,26 @@ class ServicesController < ApplicationController
     @services = Service.where(service_provider_id: params[:service_provider_id]).includes(:service_categories)
   end
 
+  def search
+    @services = Service.all
+  end
+
+  def make_search
+    if params[:service_categories].is_a?(String)
+      params[:service_categories] = params[:service_categories].split(',')
+    end
+    params[:service_categories].reject!(&:blank?)
+    @services = Service.joins(:service_categories).where('service_categories.id IN (?)', params[:service_categories])
+    respond_to do |format|
+      format.json { render json: @services }
+      format.turbo_stream
+    end
+  end
+
+  def show
+    @service = Service.find(params[:id])
+  end
+
   def create
     @service = Service.new(service_params)
     service_categories = ServiceCategory.where(id: params[:service_categories])
