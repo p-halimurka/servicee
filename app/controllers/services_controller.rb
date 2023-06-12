@@ -13,11 +13,13 @@ class ServicesController < ApplicationController
   end
 
   def make_search
-    if params[:service_categories].is_a?(String)
-      params[:service_categories] = params[:service_categories].split(',')
-    end
-    params[:service_categories].reject!(&:blank?)
-    @services = Service.joins(:service_categories).where('service_categories.id IN (?)', params[:service_categories])
+    params[:service_categories] = params[:service_categories].split(',') if params[:service_categories].is_a?(String)
+    service_categories_ids = params[:service_categories].reject(&:blank?)
+    @services = if service_categories_ids.any?
+                  Service.joins(:service_categories).where('service_categories.id IN (?)', service_categories_ids)
+                else
+                  Service.all
+                end
     respond_to do |format|
       format.json { render json: @services }
       format.turbo_stream
@@ -26,6 +28,7 @@ class ServicesController < ApplicationController
 
   def show
     @service = Service.find(params[:id])
+    @service_provider = @service.service_provider
   end
 
   def create
@@ -35,6 +38,25 @@ class ServicesController < ApplicationController
     @service.save
     render :new if @service.errors.any?
     redirect_to service_provider_services_path(params[:service_provider_id]), notice: 'Service successfuly created.'
+  end
+
+  def available_slots
+    @service = Service.find(params[:id])
+    @date = params[:date].to_date
+    @service_provider = @service.service_provider
+    @first_working_hour = @service_provider.first_working_hour.change(year: @date.year, month: @date.month, day: @date.month)
+    @closing_hour = @service_provider.closing_hour.change(year: @date.year, month: @date.month, day: @date.month)
+    @available_slots = []
+    @available_slots << @first_working_hour
+    while @first_working_hour < @closing_hour - @service.duration_in_minutes.minutes
+      @first_working_hour += @service.duration_in_minutes.minutes
+      @available_slots << @first_working_hour
+    end
+    p @available_slots
+    @bookings = @service.bookings
+    @duration = @service.duration_in_minutes
+
+    respond_to(&:turbo_stream)
   end
 
   private

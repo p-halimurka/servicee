@@ -6,7 +6,7 @@
     </div>
     <div class="offcanvas-body d-md-flex flex-column p-0 pt-lg-3 overflow-y-auto">
       <div class='ms-2 me-2' data-controller='services'>
-        <%= bootstrap_form_with url: make_search_services_path, method: :post do |f| %>
+        <%= bootstrap_form_with url: make_search_services_path, method: :post, id: 'service-search-form' do |f| %>
           <%= f.collection_check_boxes :service_categories, ServiceCategory.all, :id, :name, data: { action: 'change->services#updateSearch' } %>
           <%= f.text_field :provider_name %>
           <%= f.submit 'Search' %>

@@ -11,6 +11,9 @@ Rails.application.routes.draw do
       post :make_search
       get :make_search
     end
+    member do
+      post :available_slots
+    end
   end
 
   resources :service_providers, only: [:new, :create, :edit, :update] do
