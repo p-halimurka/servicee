@@ -13,8 +13,11 @@ Rails.application.routes.draw do
     end
     member do
       post :available_slots
+      post :update_calendar
     end
   end
+
+  resources :bookings
 
   resources :service_providers, only: [:new, :create, :edit, :update] do
     resources :services

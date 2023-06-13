@@ -62,4 +62,10 @@ export default class extends Controller {
     let button = document.getElementsByClassName('btn-triangle')[0];
     button.style.display = 'none';
   };
+
+  updateCalendar(event) {
+    const submitButton = document.getElementById('update-clndr-btn');
+    submitButton.click()
+    console.log(calendarForm);
+  }
 }

@@ -14,15 +14,31 @@ module ApplicationHelper
     end
   end
 
-  def calendar_disabled_days
-    first_month_day = Date.today.at_beginning_of_month - 1.day
-    first_monday_to_display = first_month_day.at_beginning_of_week
-    first_monday_to_display..first_month_day
+  def calendar_disabled_days(month = nil)
+    previous_month_last_day = if month
+                                Date.new(Date.today.year, month) - 1.day
+                              else
+                                Date.today.at_beginning_of_month - 1.day
+                              end
+    first_monday_to_display = previous_month_last_day.at_beginning_of_week
+    disabled_days = first_monday_to_display..previous_month_last_day
+    if disabled_days.map(&:day).size == 7
+      disabled_days = []
+    end
+    disabled_days
   end
 
-  def calendar_active_dates
-    first_month_day = Date.today.at_beginning_of_month
-    last_month_day = Date.today.at_end_of_month
+  def calendar_active_dates(month = nil)
+    first_month_day = if month
+                        Date.new(Date.today.year, month)
+                      else
+                        Date.today.at_beginning_of_month
+                      end
+    last_month_day = first_month_day.at_end_of_month
     first_month_day..last_month_day
+  end
+
+  def following_months
+    Date::MONTHNAMES.map.with_index { |m, i| [m, i] }.reject { |arr| arr[1] < Date.today.month }
   end
 end

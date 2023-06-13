@@ -42,19 +42,29 @@ class ServicesController < ApplicationController
 
   def available_slots
     @service = Service.find(params[:id])
-    @date = params[:date].to_date
+    @date = params[:date].to_datetime
     @service_provider = @service.service_provider
-    @first_working_hour = @service_provider.first_working_hour.change(year: @date.year, month: @date.month, day: @date.month)
-    @closing_hour = @service_provider.closing_hour.change(year: @date.year, month: @date.month, day: @date.month)
+    @first_working_hour = @service_provider.first_working_hour.change(year: @date.year, month: @date.month, day: @date.day)
+    @closing_hour = @service_provider.closing_hour.change(year: @date.year, month: @date.month, day: @date.day)
+    @bookings_start_hours = @service.bookings.map(&:start_time)
     @available_slots = []
     @available_slots << @first_working_hour
     while @first_working_hour < @closing_hour - @service.duration_in_minutes.minutes
       @first_working_hour += @service.duration_in_minutes.minutes
       @available_slots << @first_working_hour
     end
-    p @available_slots
-    @bookings = @service.bookings
+    @all_slots = @available_slots.map do |slot|
+      { slot: slot, available: @bookings_start_hours.exclude?(slot) } # || @service_provider.has_available_employees_at?(slot) if service provider is a company
+    end
+
     @duration = @service.duration_in_minutes
+
+    respond_to(&:turbo_stream)
+  end
+
+  def update_calendar
+    @service = Service.find(params[:id])
+    @month = params[:month].to_i
 
     respond_to(&:turbo_stream)
   end

@@ -1,0 +1,6 @@
+<% calendar_disabled_days(month).each do |disabled_date| %>
+  <%= button_tag "#{disabled_date.day}", class: "btn cal-btn", disabled: 'true' %>
+<% end %>
+<% calendar_active_dates(month).each do |active_date| %>
+  <%= button_to "#{active_date.day}", available_slots_service_path(service, date: active_date), class: "btn cal-btn whole-area-button",  data: { turbo_method: :post, bs_toggle: "modal", bs_target: "#availableSlotsModal" } %>
+<% end %>
