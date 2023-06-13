@@ -5,7 +5,8 @@ class ServicesController < ApplicationController
   end
 
   def index
-    @services = Service.where(service_provider_id: params[:service_provider_id]).includes(:service_categories)
+    @services = Service.where(service_provider_id: params[:service_provider_id])
+                       .includes(:service_categories)
   end
 
   def search
@@ -43,23 +44,11 @@ class ServicesController < ApplicationController
   end
 
   def available_slots
-    @service = Service.find(params[:id])
-    @date = params[:date].to_datetime
-    @service_provider = @service.service_provider
-    @first_working_hour = @service_provider.first_working_hour.change(year: @date.year, month: @date.month, day: @date.day)
-    @closing_hour = @service_provider.closing_hour.change(year: @date.year, month: @date.month, day: @date.day)
-    @bookings_start_hours = @service.bookings.map(&:start_time)
-    @available_slots = []
-    @available_slots << @first_working_hour
-    while @first_working_hour < @closing_hour - @service.duration_in_minutes.minutes
-      @first_working_hour += @service.duration_in_minutes.minutes
-      @available_slots << @first_working_hour
-    end
-    @all_slots = @available_slots.map do |slot|
-      { slot: slot, available: @bookings_start_hours.exclude?(slot) } # || @service_provider.has_available_employees_at?(slot) if service provider is a company
-    end
-
-    @duration = @service.duration_in_minutes
+    @result = Services::AvailableSlots.new(params).call
+    @service = @result[:service]
+    @service_provider = @result[:service_provider]
+    @available_slots = @result[:available_slots]
+    @duration = @result[:duration]
 
     respond_to(&:turbo_stream)
   end

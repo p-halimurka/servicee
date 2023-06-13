@@ -1,5 +1,5 @@
 <%= bootstrap_form_with url: bookings_path, method: :post do |f| %>
-  <%= f.select :start_time, all_slots.select {|s| s[:available] }.map { |s| ["#{s[:slot].strftime("%H:%M")} - #{(s[:slot] + duration.minutes).strftime("%H:%M")}", s[:slot]] }, label: 'Slot' %>
+  <%= f.select :start_time, available_slots.map { |slot| ["#{slot.strftime("%H:%M")} - #{(slot + duration.minutes).strftime("%H:%M")}", slot] }, label: 'Slot' %>
   <%= f.hidden_field :service_id, value: service.id %>
   <%= f.hidden_field :service_provider_id, value: service_provider.id %>
   <div class='d-flex justify-content-end'>

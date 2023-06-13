@@ -5,4 +5,8 @@ class Service < ApplicationRecord
   belongs_to :service_provider
 
   enum :pricing_type, { fixed: 0, per_hour: 1 }
+
+  def bookings_on(date = DateTime.today)
+    bookings.where('start_time >= ?', date)
+  end
 end

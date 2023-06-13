@@ -2,7 +2,7 @@ class BookingsController < ApplicationController
   def index
     user = current_user
     if user.service_consumer?
-      @bookings = Booking.where(service_consumer_id: user.service_consumer.id)
+      @bookings = Booking.where(service_consumer_id: user.service_consumer.id).includes([:bookable])
     end
   end
 

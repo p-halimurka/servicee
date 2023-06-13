@@ -6,4 +6,8 @@ class ServiceProvider < ApplicationRecord
   has_many :off_days
 
   enum :person_type, { individual: 0, company: 1 }
+
+  def any_available_employees_at?(datetime = DateTime.now)
+    false
+  end
 end

@@ -1,4 +1,4 @@
-<%= turbo_stream.update 'available-slots', partial: 'available_slots', locals: { all_slots: @all_slots, 
+<%= turbo_stream.update 'available-slots', partial: 'available_slots', locals: { available_slots: @available_slots, 
                                                                                  service_provider: @service_provider, 
                                                                                  service: @service, 
                                                                                  duration: @duration } %>
