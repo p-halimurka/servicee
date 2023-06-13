@@ -24,7 +24,7 @@
                             <div class="cal-weekday">Sun</div>
                         </div>
                         <%= turbo_frame_tag 'calendar-days', class: 'cal-days' do %>
-                            <%= render partial: 'calendar_days', locals: { service: @service, month: Date.today.month } %>
+                            <%= render partial: 'calendar_days', locals: { service: @service, month: Date.today.month, off_days: @off_days } %>
                         <% end %>
                     </div>
                 </div>

@@ -29,6 +29,8 @@ class ServicesController < ApplicationController
   def show
     @service = Service.find(params[:id])
     @service_provider = @service.service_provider
+    @off_days = OffDay.where(service_provider_id: @service_provider.id)
+                      .where('date >= ?', Date.today).pluck(:date)
   end
 
   def create
@@ -65,6 +67,9 @@ class ServicesController < ApplicationController
   def update_calendar
     @service = Service.find(params[:id])
     @month = params[:month].to_i
+    service_provider = @service.service_provider
+    @off_days = OffDay.where(service_provider_id: service_provider.id)
+                      .where('date >= ?', Date.today).pluck(:date)
 
     respond_to(&:turbo_stream)
   end

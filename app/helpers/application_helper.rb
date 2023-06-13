@@ -28,9 +28,9 @@ module ApplicationHelper
     disabled_days
   end
 
-  def calendar_active_dates(month = nil)
-    first_month_day = if month
-                        Date.new(Date.today.year, month)
+  def calendar_active_dates(**args)
+    first_month_day = if args[:month]
+                        Date.new(Date.today.year, args[:month])
                       else
                         Date.today.at_beginning_of_month
                       end

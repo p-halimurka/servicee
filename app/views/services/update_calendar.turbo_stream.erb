@@ -1,2 +1,2 @@
-<%= turbo_stream.update 'calendar-days', partial: 'calendar_days', locals: { month: @month, service: @service } %>
+<%= turbo_stream.update 'calendar-days', partial: 'calendar_days', locals: { month: @month, service: @service, off_days: @off_days } %>
 <%= turbo_stream.update 'calendar-header', partial: 'calendar_header', locals: { month: @month, service: @service } %>

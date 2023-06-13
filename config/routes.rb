@@ -18,8 +18,12 @@ Rails.application.routes.draw do
   end
 
   resources :bookings
+  resources :off_days
 
   resources :service_providers, only: [:new, :create, :edit, :update] do
+    member do
+      get :dashboard
+    end
     resources :services
   end
 end

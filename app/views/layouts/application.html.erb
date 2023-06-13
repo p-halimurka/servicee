@@ -31,10 +31,14 @@
       <% end %>
       <% if current_page?(controller: '/services', action: 'search') %>
         <%= render partial: 'shared/search_sidebar' %>
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 flex-shrink-0 custom-main">
+          <%= yield %>
+        </main>
+      <% else %>
+        <main class="flex-shrink-0 custom-main">
+          <%= yield %>
+        </main>
       <% end %>
-      <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 flex-shrink-0 custom-main">
-        <%= yield %>
-      </main>
     </div>
     <% if false %>
       <footer class="footer mt-auto py-3 bg-light">
