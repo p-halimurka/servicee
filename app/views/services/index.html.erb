@@ -7,6 +7,9 @@
         <div class="fw-bold">
           <%= service.title %>
         </div>
+        <div>
+          <%= link_to 'See bookings', bookings_service_provider_service_path(@service_provider_id, service)%>
+        </div>
         <% service.service_categories.each do |service_category| %>
           <span class="badge bg-primary-subtle border border-primary-subtle text-primary-emphasis rounded-pill">
             <%= service_category.name %>

@@ -3,9 +3,16 @@
 <% end %>
 <% calendar_active_dates(month: month).each do |active_date| %>
   <% if off_days.include?(active_date) %>
-    <%= button_to "#{active_date.day}", available_slots_service_path(service, date: active_date), disabled: true, class: "btn cal-btn whole-area-button",  data: { turbo_method: :post, bs_toggle: "modal", bs_target: "#availableSlotsModal" } %>
+    <% if current_user.service_provider? %>
+      <%= button_to "#{active_date.day}", open_bookings_service_provider_service_path(service_provider_id, service, date: active_date), disabled: true, class: "btn cal-btn whole-area-button",  data: { turbo_method: :post, bs_toggle: "modal", bs_target: "#serviceBookingsModal" } %>
+    <% elsif current_user.service_consumer? %>
+      <%= button_to "#{active_date.day}", available_slots_service_path(service, date: active_date), disabled: true, class: "btn cal-btn whole-area-button",  data: { turbo_method: :post, bs_toggle: "modal", bs_target: "#availableSlotsModal" } %>
+    <% end %>
   <% else %>
-     <%= button_to "#{active_date.day}", available_slots_service_path(service, date: active_date), class: "btn cal-btn whole-area-button",  data: { turbo_method: :post, bs_toggle: "modal", bs_target: "#availableSlotsModal" } %>
+    <% if current_user.service_provider? %>
+      <%= button_to "#{active_date.day}", open_bookings_service_provider_service_path(service_provider_id, service, date: active_date), class: "btn cal-btn whole-area-button",  data: { turbo_method: :post, bs_toggle: "modal", bs_target: "#serviceBookingsModal" } %>
+    <% elsif current_user.service_consumer? %>
+      <%= button_to "#{active_date.day}", available_slots_service_path(service, date: active_date), class: "btn cal-btn whole-area-button",  data: { turbo_method: :post, bs_toggle: "modal", bs_target: "#availableSlotsModal" } %>
+    <% end %>
   <% end %>
-  
 <% end %>

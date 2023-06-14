@@ -1,0 +1,10 @@
+<div class="card">
+  <div class="card-body">
+    <% bookings.each do |booking| %>
+      <span class="badge d-flex align-items-center p-1 pe-2 text-secondary-emphasis bg-secondary-subtle border border-secondary-subtle rounded-pill">
+        <%= booking.start_time.strftime("%H:%M") %> - <%= (booking.start_time + service.duration_in_minutes.minutes).strftime("%H:%M") %>
+      </span>
+      <h6><%= booking.service_consumer.user.full_name %></h6>
+    <% end %>
+  </div>
+</div>

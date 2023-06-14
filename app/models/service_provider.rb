@@ -10,4 +10,9 @@ class ServiceProvider < ApplicationRecord
   def any_available_employees_at?(datetime = DateTime.now)
     false
   end
+
+  def following_off_days
+    OffDay.where(service_provider_id: id)
+          .where('date >= ?', Date.today).pluck(:date)
+  end
 end

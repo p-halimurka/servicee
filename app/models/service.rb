@@ -8,5 +8,7 @@ class Service < ApplicationRecord
 
   def bookings_on(date = DateTime.today)
     bookings.where('start_time >= ?', date)
+            .where('start_time < ?', date + 1.day)
+            .order(:start_time)
   end
 end

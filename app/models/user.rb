@@ -17,4 +17,8 @@ class User < ApplicationRecord
   def service_consumer?
     service_consumer.present?
   end
+
+  def full_name
+    "#{first_name} #{last_name}"
+  end
 end

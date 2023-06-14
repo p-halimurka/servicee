@@ -24,6 +24,11 @@ Rails.application.routes.draw do
     member do
       get :dashboard
     end
-    resources :services
+    resources :services, only: [:new, :create, :index] do
+      member do
+        get :bookings
+        post :open_bookings
+      end
+    end
   end
 end

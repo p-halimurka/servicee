@@ -5,7 +5,8 @@ class ServicesController < ApplicationController
   end
 
   def index
-    @services = Service.where(service_provider_id: params[:service_provider_id])
+    @service_provider_id = params[:service_provider_id]
+    @services = Service.where(service_provider_id: @service_provider_id)
                        .includes(:service_categories)
   end
 
@@ -14,13 +15,12 @@ class ServicesController < ApplicationController
   end
 
   def make_search
-    params[:service_categories] = params[:service_categories].split(',') if params[:service_categories].is_a?(String)
-    service_categories_ids = params[:service_categories].reject(&:blank?)
-    @services = if service_categories_ids.any?
-                  Service.joins(:service_categories).where('service_categories.id IN (?)', service_categories_ids)
-                else
-                  Service.all
-                end
+    service_categories_ids = if params[:service_categories].is_a?(String)
+                               params[:service_categories].split(',').reject(&:blank?)
+                             else
+                               params[:service_categories].reject(&:blank?)
+                             end
+    @services = Services::FilterByCategories.new(service_categories_ids).call
     respond_to do |format|
       format.json { render json: @services }
       format.turbo_stream
@@ -30,8 +30,7 @@ class ServicesController < ApplicationController
   def show
     @service = Service.find(params[:id])
     @service_provider = @service.service_provider
-    @off_days = OffDay.where(service_provider_id: @service_provider.id)
-                      .where('date >= ?', Date.today).pluck(:date)
+    @off_days = @service_provider.following_off_days
   end
 
   def create
@@ -57,8 +56,22 @@ class ServicesController < ApplicationController
     @service = Service.find(params[:id])
     @month = params[:month].to_i
     service_provider = @service.service_provider
-    @off_days = OffDay.where(service_provider_id: service_provider.id)
-                      .where('date >= ?', Date.today).pluck(:date)
+    @off_days = service_provider.following_off_days
+
+    respond_to(&:turbo_stream)
+  end
+
+  def bookings
+    @service = Service.find(params[:id])
+    service_provider = @service.service_provider
+    @service_provider_id = service_provider.id
+    @off_days = service_provider.following_off_days
+  end
+
+  def open_bookings
+    @service = Service.find(params[:id])
+    date = params[:date].to_date
+    @bookings = @service.bookings_on(date).includes(service_consumer: :user)
 
     respond_to(&:turbo_stream)
   end
