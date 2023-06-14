@@ -1,0 +1,4 @@
+<% @service_consumers.each do |consumer| %>
+  <%= link_to "Start chat with #{consumer.user.full_name}", rooms_path(receiver_id: consumer.user.id), data: { turbo_method: :post }, class: 'btn btn-primary create-room', id: "room-#{consumer.user.id}-#{current_user.id}" %>
+<% end %>
+

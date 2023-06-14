@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_06_13_150801) do
+ActiveRecord::Schema[7.0].define(version: 2023_06_14_142820) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -40,6 +40,16 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_13_150801) do
     t.index ["user_id"], name: "index_employees_on_user_id"
   end
 
+  create_table "messages", force: :cascade do |t|
+    t.bigint "room_id"
+    t.bigint "user_id"
+    t.string "body"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["room_id"], name: "index_messages_on_room_id"
+    t.index ["user_id"], name: "index_messages_on_user_id"
+  end
+
   create_table "off_days", force: :cascade do |t|
     t.bigint "service_provider_id"
     t.bigint "employee_id"
@@ -60,6 +70,15 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_13_150801) do
     t.datetime "updated_at", null: false
     t.index ["reviewable_type", "reviewable_id"], name: "index_reviews_on_reviewable"
     t.index ["service_consumer_id"], name: "index_reviews_on_service_consumer_id"
+  end
+
+  create_table "rooms", force: :cascade do |t|
+    t.bigint "first_subscriber_id"
+    t.bigint "second_subscriber_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["first_subscriber_id"], name: "index_rooms_on_first_subscriber_id"
+    t.index ["second_subscriber_id"], name: "index_rooms_on_second_subscriber_id"
   end
 
   create_table "service_categories", force: :cascade do |t|
@@ -139,4 +158,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_13_150801) do
   end
 
   add_foreign_key "employees", "service_providers", column: "employer_id"
+  add_foreign_key "rooms", "users", column: "first_subscriber_id"
+  add_foreign_key "rooms", "users", column: "second_subscriber_id"
 end

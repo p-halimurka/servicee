@@ -1,0 +1,18 @@
+<div id="message-display">
+  <% @messages.each do |message| %>
+    <div class="message">
+      <div class="message-header">
+        <p><%= message.user.full_name %></p>
+      </div>
+      <div class="message-body">
+        <p><%= message.body %></p>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<%= bootstrap_form_with url: send_message_room_path(@room), method: :post, class: 'room', id: "room-#{@room.first_subscriber_id}-#{@room.second_subscriber_id}" do |f| %>
+  <%= f.text_area :body, id: 'message-input', hide_label: true %>
+  <%= f.hidden_field :user_id, value: current_user.id %>
+  <%= f.submit 'Send message' %>
+<% end %>

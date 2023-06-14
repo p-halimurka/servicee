@@ -19,10 +19,16 @@ Rails.application.routes.draw do
 
   resources :bookings
   resources :off_days
+  resources :rooms do
+    member do
+      post :send_message
+    end
+  end
 
   resources :service_providers, only: [:new, :create, :edit, :update] do
     member do
       get :dashboard
+      get :chats
     end
     resources :services, only: [:new, :create, :index] do
       member do

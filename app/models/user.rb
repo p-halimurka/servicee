@@ -7,6 +7,9 @@ class User < ApplicationRecord
   has_one :service_provider
   has_one :service_consumer
   has_one :employee
+  has_many :rooms, foreign_key: :first_subscriber_id
+  has_many :rooms, foreign_key: :second_subscriber_id
+  has_many :messages
 
   attr_accessor :user_type
 
