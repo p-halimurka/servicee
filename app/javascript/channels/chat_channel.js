@@ -21,24 +21,38 @@ if(currentRoom) {
       const receiverMessageDisplay = document.getElementById(`message-display-of-${data['receiver_id']}`);
       const senderMessageDisplay = document.getElementById(`message-display-of-${data['sender_id']}`);
       if(receiverMessageDisplay) {
-        receiverMessageDisplay.insertAdjacentHTML('beforeend', this.template(data));
+        receiverMessageDisplay.insertAdjacentHTML('beforeend', this.receiverTemplate(data));
         const messageRead = this.isElementInViewport(receiverMessageDisplay);
         console.log(messageRead);
         this.updateMessageRead(data['message_id'], messageRead)
       };
       if(senderMessageDisplay) {
-        senderMessageDisplay.insertAdjacentHTML('beforeend', this.template(data));
+        senderMessageDisplay.insertAdjacentHTML('beforeend', this.senderTemplate(data));
         const messageRead = this.isElementInViewport(senderMessageDisplay);
       };
 
     },
-    template(data) {
+    receiverTemplate(data) {
       return `<div class="message">
-                <div class="message-header">
+                <div class="message-header d-flex justify-content-start">
                   <p>${data['sent_by']}</p>
                 </div>
-                <div class="message-body">
-                  <p>${data['body']}</p>
+                <div class="message-body d-flex justify-content-start">
+                  <div class='card p-1 message-card receiver-message'>
+                    ${data['body']}
+                  </div>
+                </div>
+              </div>`
+    },
+    senderTemplate(data) {
+      return `<div class="message">
+                <div class="message-header d-flex justify-content-end">
+                  <p>${data['sent_by']}</p>
+                </div>
+                <div class="message-body d-flex justify-content-end">
+                  <div class='card p-1 message-card sender-message'>
+                    ${data['body']}
+                  </div>
                 </div>
               </div>`
     },
