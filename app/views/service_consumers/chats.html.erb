@@ -1,0 +1,8 @@
+<% @service_providers.each do |provider| %>
+  <% if provider.chat_room_with(current_user.service_consumer) %>
+    <%= link_to "Chat with #{provider.user.full_name}", room_path(provider.chat_room_with(current_user.service_consumer)), data: { turbo: false } %>
+  <% else %>
+    <%= link_to "Start chat with #{provider.user.full_name}", rooms_path(receiver_id: provider.user.id), data: { turbo_method: :post }, class: 'btn btn-primary create-room', id: "room-#{provider.user.id}-#{current_user.id}" %>
+  <% end %>
+<% end %>
+

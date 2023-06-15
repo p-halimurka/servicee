@@ -37,4 +37,12 @@ Rails.application.routes.draw do
       end
     end
   end
+
+  resources :service_consumers do
+    member do
+      get :chats
+    end
+  end
+
+  resources :messages
 end

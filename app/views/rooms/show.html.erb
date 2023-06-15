@@ -1,4 +1,4 @@
-<div id="message-display">
+<div>
   <% @messages.each do |message| %>
     <div class="message">
       <div class="message-header">
@@ -9,6 +9,8 @@
       </div>
     </div>
   <% end %>
+  <div id="message-display-of-<%= current_user.id %>">
+  </div>
 </div>
 
 <%= bootstrap_form_with url: send_message_room_path(@room), method: :post, class: 'room', id: "room-#{@room.first_subscriber_id}-#{@room.second_subscriber_id}" do |f| %>

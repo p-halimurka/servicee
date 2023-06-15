@@ -15,4 +15,10 @@ class ServiceProvider < ApplicationRecord
     OffDay.where(service_provider_id: id)
           .where('date >= ?', Date.today).pluck(:date)
   end
+
+  def chat_room_with(interlocutor)
+    rooms = Room.where(first_subscriber_id: user.id, second_subscriber_id: interlocutor.user.id)
+    rooms += Room.where(first_subscriber_id: interlocutor.user.id, second_subscriber_id: user.id)
+    rooms.first
+  end
 end
