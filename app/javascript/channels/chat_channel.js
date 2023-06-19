@@ -23,8 +23,7 @@ if(currentRoom) {
       if(receiverMessageDisplay) {
         receiverMessageDisplay.insertAdjacentHTML('beforeend', this.receiverTemplate(data));
         const messageRead = this.isElementInViewport(receiverMessageDisplay);
-        console.log(messageRead);
-        this.updateMessageRead(data['message_id'], messageRead)
+        this.updateMessageRead(data['message_id'], messageRead);
       };
       if(senderMessageDisplay) {
         senderMessageDisplay.insertAdjacentHTML('beforeend', this.senderTemplate(data));
@@ -70,7 +69,7 @@ if(currentRoom) {
       );
     
       return isInViewport;
-    },
+    },    
 
     async updateMessageRead(messageId, read) {
       const csrfToken = document.querySelector('meta[name="csrf-token"]').content;

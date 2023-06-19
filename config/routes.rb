@@ -44,5 +44,9 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :messages
+  resources :messages do
+    collection do
+      put :update_collection
+    end
+  end
 end

@@ -7,7 +7,7 @@ class RoomsController < ApplicationController
 
   def show
     @room = Room.find(params[:id])
-    @messages = @room.messages.includes(:user)
+    @messages = @room.messages.time_ordered.includes(:user)
   end
 
   def send_message
