@@ -265,3 +265,9 @@
 .receiver-message {
   background-color: rgb(217, 236, 226);
 }
+
+.scroll-to-bottom-link {
+  position: fixed;
+  bottom: 20px; /* Adjust the distance from the bottom as needed */
+  right: 20px; /* Adjust the distance from the right as needed */
+}

@@ -1,6 +1,15 @@
 <% @service_consumers.each do |consumer| %>
   <% if consumer.chat_room_with(current_user.service_provider) %>
-    <%= link_to "Chat with #{consumer.user.full_name}", room_path(consumer.chat_room_with(current_user.service_provider)), data: { controller: 'chats', action: 'click->chats#scrollToBottom' }  %>
+    <%= link_to room_path(consumer.chat_room_with(current_user.service_provider)), data: { turbo: false }, class: 'position-relative', id: "open-room-#{consumer.user.id}-#{current_user.id}" do %>
+      <%= "Chat with #{consumer.user.full_name}" %>
+      <% unread_messages_number = current_user.unread_messages_number_in_room_with(consumer.user_id) %>
+      <% if unread_messages_number.positive? %>
+        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+          <%= unread_messages_number %>
+          <span class="visually-hidden">unread messages</span>
+        </span>
+      <% end %>
+    <% end %>
   <% else %>
     <%= link_to "Start chat with #{consumer.user.full_name}", rooms_path(receiver_id: consumer.user.id), data: { turbo_method: :post }, class: 'btn btn-primary create-room', id: "room-#{consumer.user.id}-#{current_user.id}" %>
   <% end %>

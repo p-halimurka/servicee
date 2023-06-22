@@ -20,6 +20,7 @@ class RoomsController < ApplicationController
     room_name = "room-#{@room.first_subscriber_id}-#{@room.second_subscriber_id}"
     @message = Message.new(body: params[:body], user_id: params[:user_id], room_id: params[:id])
     @message.save
+    @receiver_number_of_unread_messages = @room.messages.unread.where('messages.user_id = ?', params[:user_id]).count
     ActionCable.server.broadcast(
       "chat_#{room_name}",
       {
@@ -34,7 +35,9 @@ class RoomsController < ApplicationController
       'message_notifications',
       {
         sent_by: current_user.full_name,
-        receiver_id: receiver_id
+        receiver_id: receiver_id,
+        sender_id: current_user.id,
+        receiver_number_of_unread_messages: @receiver_number_of_unread_messages
       }
     )
   end

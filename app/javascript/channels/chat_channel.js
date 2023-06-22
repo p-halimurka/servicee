@@ -29,7 +29,6 @@ if(currentRoom) {
         senderMessageDisplay.insertAdjacentHTML('beforeend', this.senderTemplate(data));
         const messageRead = this.isElementInViewport(senderMessageDisplay);
       };
-
     },
     receiverTemplate(data) {
       return `<div class="message">
