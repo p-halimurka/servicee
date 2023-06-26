@@ -20,8 +20,13 @@ module ApplicationHelper
                               else
                                 Date.today.at_beginning_of_month - 1.day
                               end
+    last_disabled_day = Date.today - 1.day
     first_monday_to_display = previous_month_last_day.at_beginning_of_week
-    disabled_days = first_monday_to_display..previous_month_last_day
+    disabled_days = if Date.today.month == month
+                      first_monday_to_display..last_disabled_day
+                    else
+                      first_monday_to_display..previous_month_last_day
+                    end
     if disabled_days.map(&:day).size == 7
       disabled_days = []
     end
@@ -29,13 +34,14 @@ module ApplicationHelper
   end
 
   def calendar_active_dates(**args)
-    first_month_day = if args[:month]
-                        Date.new(Date.today.year, args[:month])
-                      else
-                        Date.today.at_beginning_of_month
-                      end
+    today = Date.today
+    first_month_day = Date.new(today.year, args[:month])
     last_month_day = first_month_day.at_end_of_month
-    first_month_day..last_month_day
+    if args[:month] == today.month
+      today..last_month_day
+    else
+      first_month_day..last_month_day
+    end
   end
 
   def following_months
