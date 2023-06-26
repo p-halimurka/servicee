@@ -10,7 +10,14 @@
     <% end %>
   <% else %>
     <% if current_user.service_provider? %>
-      <%= button_to "#{active_date.day}", open_bookings_service_provider_service_path(service_provider_id, service, date: active_date), class: "btn cal-btn whole-area-button",  data: { turbo_method: :post, bs_toggle: "modal", bs_target: "#serviceBookingsModal" } %>
+      <%= button_to open_bookings_service_provider_service_path(service_provider_id, service, date: active_date), class: "btn cal-btn whole-area-button position-relative", id: "service-#{service.id}-on-#{active_date}", data: { turbo_method: :post, bs_toggle: "modal", bs_target: "#serviceBookingsModal" } do %>
+        <%= active_date.day %>
+        <% if service.requires_confirmation_and_has_unconfirmed_bookings?(active_date) %>
+          <span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle">
+            <span class="visually-hidden">New alerts</span>
+          </span>
+        <% end %>
+      <% end %>
     <% elsif current_user.service_consumer? %>
       <%= button_to "#{active_date.day}", available_slots_service_path(service, date: active_date), class: "btn cal-btn whole-area-button",  data: { turbo_method: :post, bs_toggle: "modal", bs_target: "#availableSlotsModal" } %>
     <% end %>

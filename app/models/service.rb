@@ -11,4 +11,13 @@ class Service < ApplicationRecord
             .where('start_time < ?', date + 1.day)
             .order(:start_time)
   end
+
+  def requires_confirmation_and_has_unconfirmed_bookings?(date = nil)
+    any_unconfirmed_bookings = if date
+                                 bookings.where('date(start_time) = ?', date).unconfirmed.any?
+                               else
+                                 bookings.unconfirmed.any?
+                               end
+    requires_confirmation && any_unconfirmed_bookings
+  end
 end

@@ -17,7 +17,12 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :bookings
+  resources :bookings do
+    member do
+      post :resolve
+    end
+  end
+
   resources :off_days
   resources :rooms do
     member do

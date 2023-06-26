@@ -2,21 +2,28 @@
 <div class='d-flex justify-content-center'>
   <ol class="list-group list-group-numbered mt-5 service-container">
     <% @services.each do |service| %>
-    <li class="list-group-item d-flex justify-content-between align-items-start">
-      <div class="ms-2 me-auto">
-        <div class="fw-bold">
-          <%= service.title %>
+      <li class="list-group-item d-flex justify-content-between align-items-start">
+        <div class="ms-2 me-auto">
+          <div class="fw-bold">
+            <%= service.title %>
+          </div>
+          <div>
+            <%= link_to bookings_service_provider_service_path(@service_provider_id, service), id: "bookings-link-for-service-#{service.id}", class: 'position-relative' do %>
+              See bookings
+              <% if service.requires_confirmation_and_has_unconfirmed_bookings? %>
+                <span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle">
+                  <span class="visually-hidden">New alerts</span>
+                </span>
+              <% end %>
+            <% end %>
+          </div>
+          <% service.service_categories.each do |service_category| %>
+            <span class="badge bg-primary-subtle border border-primary-subtle text-primary-emphasis rounded-pill">
+              <%= service_category.name %>
+            </span>
+          <% end %>
         </div>
-        <div>
-          <%= link_to 'See bookings', bookings_service_provider_service_path(@service_provider_id, service)%>
-        </div>
-        <% service.service_categories.each do |service_category| %>
-          <span class="badge bg-primary-subtle border border-primary-subtle text-primary-emphasis rounded-pill">
-            <%= service_category.name %>
-          </span>
-        <% end %>
-      </div>
-    </li>
+      </li>
     <% end %>
   </ol>
 </div>

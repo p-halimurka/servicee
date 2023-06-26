@@ -43,7 +43,7 @@ module Services
     end
 
     def load_same_day_bookings_start_times
-      @result[:same_day_bookings_start_times] = @result[:service].bookings_on(@result[:date]).pluck(:start_time)
+      @result[:same_day_bookings_start_times] = @result[:service].bookings_on(@result[:date]).without_declined.pluck(:start_time)
     end
 
     def find_available_slots
@@ -51,9 +51,9 @@ module Services
       closing_hour = @result[:closing_hour]
       duration = @result[:duration]
       @result[:available_slots] = []
-      while opening_hour < closing_hour - duration.minutes
-        opening_hour += duration.minutes
+      while closing_hour - duration.minutes >= opening_hour
         @result[:available_slots] << opening_hour if slot_available?(opening_hour)
+        opening_hour += duration.minutes
       end
     end
 

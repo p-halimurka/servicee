@@ -1,10 +1,23 @@
 <div class="card">
   <div class="card-body">
     <% bookings.each do |booking| %>
-      <span class="badge d-flex align-items-center p-1 pe-2 text-secondary-emphasis bg-secondary-subtle border border-secondary-subtle rounded-pill">
-        <%= booking.start_time.strftime("%H:%M") %> - <%= (booking.start_time + service.duration_in_minutes.minutes).strftime("%H:%M") %>
-      </span>
-      <h6><%= booking.service_consumer.user.full_name %></h6>
+      <div class='d-flex flex-row align-items-center mb-2'>
+        <span class="badge time-badge d-flex align-items-center justify-content-center me-2 p-1 pe-2 text-secondary-emphasis bg-secondary-subtle border border-secondary-subtle rounded-pill">
+          <%= booking.start_time.strftime("%H:%M") %> - <%= (booking.start_time + service.duration_in_minutes.minutes).strftime("%H:%M") %>
+        </span>
+        <h6><%= booking.service_consumer.user.full_name %></h6>
+          <% if booking.unconfirmed? %>
+            <%= turbo_frame_tag "resolve-booking-#{booking.id}-button" do %>
+              <%= render partial: 'shared/resolve_booking_button', locals: { booking: booking, disabled: false, btn_class: 'btn-outline-success', operation: :confirm } %>
+            <% end %>
+            <%= render partial: 'shared/resolve_booking_button', locals: { booking: booking, disabled: false, btn_class: 'btn-outline-danger', operation: :decline } %>
+          <% elsif booking.confirmed? %>
+            <%= render partial: 'shared/resolve_booking_button', locals: { booking: booking, disabled: true, btn_class: 'btn-outline-secondary', operation: :confirm }%>
+            <%= render partial: 'shared/resolve_booking_button', locals: { booking: booking, disabled: false, btn_class: 'btn-outline-danger', operation: :decline } %>
+          <% elsif booking.declined? %>
+            Declined
+          <% end %>
+      </div>
     <% end %>
   </div>
 </div>

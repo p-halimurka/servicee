@@ -7,4 +7,5 @@ class ServiceConsumer < ApplicationRecord
     rooms += Room.where(first_subscriber_id: service_provider.user.id, second_subscriber_id: user.id)
     rooms.first
   end
+
 end

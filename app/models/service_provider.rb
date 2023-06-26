@@ -21,4 +21,10 @@ class ServiceProvider < ApplicationRecord
     rooms += Room.where(first_subscriber_id: interlocutor.user.id, second_subscriber_id: user.id)
     rooms.first
   end
+
+  def any_service_requires_confirmation_and_with_unconfirmed_bookings?
+    services.includes(:bookings).any? do |s|
+      s.requires_confirmation && s.bookings.any?(&:unconfirmed?)
+    end
+  end
 end

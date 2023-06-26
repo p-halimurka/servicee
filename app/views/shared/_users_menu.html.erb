@@ -13,7 +13,14 @@
           </li>
 
           <li class="nav-item ms-2">
-            <%= link_to 'Services', service_provider_services_path(current_user.service_provider), class: 'nav-link underline-link' %>
+            <%= link_to service_provider_services_path(current_user.service_provider), class: 'nav-link underline-link position-relative', id: "services-link-of-#{current_user.service_provider.id}" do %>
+              Services
+              <% if current_user.service_provider.any_service_requires_confirmation_and_with_unconfirmed_bookings? %>
+                <span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle">
+                  <span class="visually-hidden">New alerts</span>
+                </span>
+              <% end %>
+            <% end %>
           </li>
 
           <li class="nav-item ms-2">
@@ -34,6 +41,17 @@
         <% elsif current_user.service_consumer? %>
           <li class="nav-item ms-2">
             <%= link_to 'Search services', search_services_path, class: 'nav-link underline-link' %>
+          </li>
+
+          <li class="nav-item ms-2">
+            <%= link_to bookings_path, class: 'nav-link underline-link position-relative', id: "consumer-#{current_user.service_consumer.id}-bookings-link" do %>
+              My bookings
+              <% if current_user.service_consumer.bookings.not_seen.any? %>
+                <span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle">
+                  <span class="visually-hidden">New alerts</span>
+                </span>
+              <% end %>
+            <% end %>
           </li>
           <li class="nav-item ms-2">
             <%= link_to chats_service_consumer_path(current_user.service_consumer), class: 'nav-link underline-link position-relative', id: "chats-link-of-#{current_user.id}" do %>
