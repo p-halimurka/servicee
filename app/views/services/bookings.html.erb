@@ -1,0 +1,42 @@
+<div class="card">
+  <div class="card-body">
+    <div class="d-flex flex-column flex-md-row p-4 gap-4 py-md-5 align-items-center justify-content-center">
+        <div class="dropdown-menu d-block position-static p-2 mx-0 shadow rounded-3 w-340px" data-bs-theme="light">
+            <div class="d-grid gap-1">
+                <div class="cal">
+                    <%= turbo_frame_tag 'calendar-header', class: 'cal-month d-flex justify-content-between' do %>
+                      <%= render partial: 'calendar_header', locals: { service: @service, month: Date.today.month } %>
+                    <% end %>
+                    <div class="cal-weekdays text-body-secondary" data-controller='services'>
+                        <div class="cal-weekday">Mon</div>
+                        <div class="cal-weekday">Tue</div>
+                        <div class="cal-weekday">Wed</div>
+                        <div class="cal-weekday">Thu</div>
+                        <div class="cal-weekday">Fri</div>
+                        <div class="cal-weekday">Sat</div>
+                        <div class="cal-weekday">Sun</div>
+                    </div>
+                    <%= turbo_frame_tag 'calendar-days', class: 'cal-days' do %>
+                      <%= render partial: 'calendar_days', locals: { service: @service, month: Date.today.month, off_days: @off_days, service_provider_id: @service_provider_id } %>
+                    <% end %>
+                </div>
+            </div>
+        </div>
+     </div>
+  </div>
+</div>
+
+<div class="modal fade" id="serviceBookingsModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel"><%= @service.title %> Bookings</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <%= turbo_frame_tag 'service-bookings-modal' do %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

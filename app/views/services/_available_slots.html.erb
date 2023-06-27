@@ -1,0 +1,13 @@
+<%= bootstrap_form_with url: bookings_path, method: :post do |f| %>
+  <%= f.select :start_time, available_slots.map { |slot| ["#{slot.strftime("%H:%M")} - #{(slot + duration.minutes).strftime("%H:%M")}", slot] }, label: 'Slot' %>
+  <%= f.hidden_field :service_id, value: service.id %>
+  <%= f.hidden_field :service_provider_id, value: service_provider.id %>
+  <% if service.requires_confirmation %>
+    <%= f.hidden_field :status, value: :unconfirmed %>
+  <% else %>
+    <%= f.hidden_field :status, value: :confirmed %>
+  <% end %>
+  <div class='d-flex justify-content-end'>
+    <%= f.submit 'Book now', class: 'btn btn-primary', data: { turbo: false } %>
+  </div>
+<% end %>

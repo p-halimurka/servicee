@@ -1,0 +1,10 @@
+
+<div class='d-flex justify-content-center mt-5'>
+  <div class='off-day-form'>
+    <%= bootstrap_form_with url: off_days_path, method: :post do |f| %>
+      <%= f.date_field :date, min: Date.today %>
+      <%= f.hidden_field :service_provider_id, value: current_user.service_provider.id %>
+      <%= f.submit 'Add day off' %>
+    <% end %>
+  </div>
+</div>

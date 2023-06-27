@@ -1,0 +1,16 @@
+<ul class="list-group">
+  <% @bookings.each do |booking| %>
+    <li class="list-group-item">
+      <%= booking.bookable.title %>
+      <% if booking.bookable.requires_confirmation && booking.unconfirmed? %>
+        <small class="text-body-secondary">
+          Not confirmed yet
+        </small>
+      <% elsif booking.bookable.requires_confirmation %>
+        <small class="text-body-secondary">
+          Confirmed
+        </small>
+      <% end %>
+    </li>
+  <% end %>
+</ul>

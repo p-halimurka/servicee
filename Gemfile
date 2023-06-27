@@ -69,6 +69,7 @@ group :development do
   gem 'rubocop-performance', '~> 1.11'
   gem 'rubocop-rails', '~> 2.12'
   gem 'database_cleaner', '~> 2.0'
+  gem 'bullet'
 
   # Add speed badges [https://github.com/MiniProfiler/rack-mini-profiler]
   # gem "rack-mini-profiler"

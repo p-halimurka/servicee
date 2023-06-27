@@ -1,0 +1,15 @@
+<% previous_button_disabled = month == Date.today.month %>
+<%= button_to update_calendar_service_path(service, month: month - 1), disabled: previous_button_disabled, data: { turbo_method: :post }, class: "btn cal-btn whole-area-button nav-month" do %>
+  <i class="bi bi-arrow-left-short"></i>
+<% end %>
+<%= bootstrap_form_with url: update_calendar_service_path(service), method: :post, class: 'd-flex align-items-center', data: { controller: 'services',  action: 'change->services#updateCalendar' } do |f| %>
+  <%= f.select :month, following_months, { selected: month, hide_label: true, wrapper_class: '' }, { class: 'month-select' }  %>
+  <%= f.submit 'Update', hidden: true, id: 'update-clndr-btn' %>
+<% end %>
+<% next_button_disabled = month == 12 %>
+<%= button_to update_calendar_service_path(service, month: month + 1), disabled: next_button_disabled, data: { turbo_method: :post }, class: "btn cal-btn whole-area-button nav-month" do %>
+  <i class="bi bi-arrow-right-short"></i>
+<% end %>
+
+
+

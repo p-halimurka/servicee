@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_06_09_144407) do
+ActiveRecord::Schema[7.0].define(version: 2023_06_26_145627) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -25,6 +25,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_09_144407) do
     t.integer "status"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "update_seen", default: 0
     t.index ["bookable_type", "bookable_id"], name: "index_bookings_on_bookable"
     t.index ["employee_id"], name: "index_bookings_on_employee_id"
     t.index ["service_consumer_id"], name: "index_bookings_on_service_consumer_id"
@@ -40,6 +41,27 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_09_144407) do
     t.index ["user_id"], name: "index_employees_on_user_id"
   end
 
+  create_table "messages", force: :cascade do |t|
+    t.bigint "room_id"
+    t.bigint "user_id"
+    t.string "body"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.boolean "read", default: false
+    t.index ["room_id"], name: "index_messages_on_room_id"
+    t.index ["user_id"], name: "index_messages_on_user_id"
+  end
+
+  create_table "off_days", force: :cascade do |t|
+    t.bigint "service_provider_id"
+    t.bigint "employee_id"
+    t.date "date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["employee_id"], name: "index_off_days_on_employee_id"
+    t.index ["service_provider_id"], name: "index_off_days_on_service_provider_id"
+  end
+
   create_table "reviews", force: :cascade do |t|
     t.string "reviewable_type", null: false
     t.bigint "reviewable_id", null: false
@@ -50,6 +72,15 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_09_144407) do
     t.datetime "updated_at", null: false
     t.index ["reviewable_type", "reviewable_id"], name: "index_reviews_on_reviewable"
     t.index ["service_consumer_id"], name: "index_reviews_on_service_consumer_id"
+  end
+
+  create_table "rooms", force: :cascade do |t|
+    t.bigint "first_subscriber_id"
+    t.bigint "second_subscriber_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["first_subscriber_id"], name: "index_rooms_on_first_subscriber_id"
+    t.index ["second_subscriber_id"], name: "index_rooms_on_second_subscriber_id"
   end
 
   create_table "service_categories", force: :cascade do |t|
@@ -94,8 +125,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_09_144407) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "person_type", default: 0, null: false
-    t.time "first_working_hour"
-    t.time "last_working_hour"
+    t.time "opening_hour"
+    t.time "closing_hour"
     t.index ["user_id"], name: "index_service_providers_on_user_id"
   end
 
@@ -124,9 +155,16 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_09_144407) do
     t.datetime "updated_at", null: false
     t.string "last_name", default: "", null: false
     t.string "first_name", default: "", null: false
+    t.integer "sign_in_count", default: 0, null: false
+    t.datetime "current_sign_in_at"
+    t.datetime "last_sign_in_at"
+    t.string "current_sign_in_ip"
+    t.string "last_sign_in_ip"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
   add_foreign_key "employees", "service_providers", column: "employer_id"
+  add_foreign_key "rooms", "users", column: "first_subscriber_id"
+  add_foreign_key "rooms", "users", column: "second_subscriber_id"
 end

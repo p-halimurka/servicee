@@ -1,0 +1,7 @@
+<%= button_to resolve_booking_path(booking, operation: operation), disabled: disabled, data: { turbo_method: :post }, class: "ms-2 btn #{btn_class} rounded-circle" do %>
+  <% if operation == :confirm %>
+    <i class="bi bi-check-lg"></i>
+  <% elsif operation == :decline %>
+    <i class="bi bi-x-lg"></i>
+  <% end %>
+<% end %>
