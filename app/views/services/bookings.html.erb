@@ -5,7 +5,7 @@
             <div class="d-grid gap-1">
                 <div class="cal">
                     <%= turbo_frame_tag 'calendar-header', class: 'cal-month d-flex justify-content-between' do %>
-                      <%= render partial: 'calendar_header', locals: { service: @service, month: Date.today.month } %>
+                      <%= render partial: 'calendar_header', locals: { service: @service, month: Date.today.month, rendered_for: :provider } %>
                     <% end %>
                     <div class="cal-weekdays text-body-secondary" data-controller='services'>
                         <div class="cal-weekday">Mon</div>
@@ -17,7 +17,7 @@
                         <div class="cal-weekday">Sun</div>
                     </div>
                     <%= turbo_frame_tag 'calendar-days', class: 'cal-days' do %>
-                      <%= render partial: 'calendar_days', locals: { service: @service, month: Date.today.month, off_days: @off_days, service_provider_id: @service_provider_id } %>
+                      <%= render partial: 'provider_calendar_days', locals: { service: @service, month: Date.today.month, off_days: @off_days, service_provider_id: @service_provider_id } %>
                     <% end %>
                 </div>
             </div>

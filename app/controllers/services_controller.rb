@@ -57,6 +57,7 @@ class ServicesController < ApplicationController
     @month = params[:month].to_i
     service_provider = @service.service_provider
     @off_days = service_provider.following_off_days
+    @rendered_for = params[:rendered_for]
 
     respond_to(&:turbo_stream)
   end
