@@ -1,6 +1,9 @@
 <% if params[:operation] == 'confirm' %>
-  <%= turbo_stream.update "resolve-booking-#{@booking.id}-button", partial: 'shared/resolve_booking_button', 
-                                                                 locals: { booking: @booking, disabled: true, btn_class: 'btn-outline-secondary', operation: :confirm } %>
+  <%= turbo_stream.update "resolve-booking-#{@booking.id}-buttons", partial: 'shared/resolve_booking_button', 
+                                                                    locals: { booking: @booking, disabled: true, btn_class: 'btn-outline-secondary', operation: :confirm } %>
+  <%= turbo_stream.append "resolve-booking-#{@booking.id}-buttons", '<p class="text-body-tertiary">Confirmed</p>' %>
 <% elsif params[:operation] == 'decline' %>
-  <%= turbo_stream.update "resolve-booking-#{@booking.id}-button", "Declined" %>
+  <%= turbo_stream.update "resolve-booking-#{@booking.id}-buttons", partial: 'shared/resolve_booking_button', 
+                                                                    locals: { booking: @booking, disabled: true, btn_class: 'btn-outline-danger', operation: :decline } %>
+  <%= turbo_stream.append "resolve-booking-#{@booking.id}-buttons", '<p class="text-danger">Declined</p>' %>
 <% end %>

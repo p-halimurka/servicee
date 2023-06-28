@@ -1,0 +1,23 @@
+<% provider_calendar_disabled_days.each do |disabled_date| %>
+  <%= button_tag "#{disabled_date.day}", class: "btn cal-btn", disabled: 'true' %>
+<% end %>
+<% provider_calendar_active_dates(month: month).each do |active_date| %>
+  <% if off_days.include?(active_date) %>
+    <%= button_to "#{active_date.day}", open_bookings_service_provider_service_path(service_provider_id, service, date: active_date), disabled: true, 
+                                                                                                                                      class: "btn cal-btn whole-area-button",  
+                                                                                                                                      data: { turbo_method: :post, bs_toggle: "modal", 
+                                                                                                                                      bs_target: "#serviceBookingsModal" } %>
+  <% else %>
+    <%= button_to open_bookings_service_provider_service_path(service_provider_id, service, date: active_date), class: "btn cal-btn whole-area-button position-relative", 
+                                                                                                                id: "service-#{service.id}-on-#{active_date}", 
+                                                                                                                data: { turbo_method: :post, bs_toggle: "modal", 
+                                                                                                                bs_target: "#serviceBookingsModal" } do %>
+      <%= active_date.day %>
+      <% if service.requires_confirmation_and_has_unconfirmed_bookings?(active_date) %>
+        <span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle">
+          <span class="visually-hidden">New alerts</span>
+        </span>
+      <% end %>
+    <% end %>
+  <% end %>
+<% end %>
